@@ -1,0 +1,36 @@
+{
+  "name": "redux-saga-actions",
+  "version": "0.0.1",
+  "description": "Easily create watchers for actions",
+  "main": "build/index.js",
+  "files": [
+    "build"
+  ],
+  "repository": "git@github.com:heygrady/redux-saga-actions.git",
+  "author": "Grady Kuhnline <github@heygrady.net>",
+  "license": "MIT",
+  "config": {
+    "presets": [
+      "neutrino-preset-standard",
+      "neutrino-preset-node",
+      "neutrino-preset-jest",
+      "neutrino-custom.js"
+    ]
+  },
+  "scripts": {
+    "test": "neutrino test",
+    "start": "neutrino start && node build/index.js",
+    "build": "neutrino build",
+    "prepublish": "yarn build"
+  },
+  "devDependencies": {
+    "neutrino": "^4.2.1",
+    "neutrino-preset-jest": "^4.2.1",
+    "neutrino-preset-node": "^4.2.1",
+    "neutrino-preset-standard": "^4.3.3",
+    "redux-saga": "^0.14.3"
+  },
+  "peerDependencies": {
+    "redux-saga": "^0.14.3"
+  }
+}
