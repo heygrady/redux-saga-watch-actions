@@ -1,10 +1,10 @@
-# redux-saga-actions
+# redux-saga-watch-actions
 Helper methods for managing sagas that respond to actions. Similar in style to [`redux-actions`](https://github.com/acdlite/redux-actions).
 
 ## Installation
 
 ```
-yarn add redux-saga redux-saga-actions
+yarn add redux-saga redux-saga-watch-actions
 ```
 
 *NOTE:* [`redux-saga`](https://github.com/redux-saga/redux-saga) must be installed as a peer dependency.
@@ -14,7 +14,7 @@ yarn add redux-saga redux-saga-actions
 Below is an example usage that matches closely to the `fetchUser` [example in the redux-saga readme](https://github.com/redux-saga/redux-saga#sagasjs).
 
 ```js
-import { watchActions } from 'redux-saga-actions'
+import { watchActions } from 'redux-saga-watch-actions'
 
 // compare to the example from the redux-saga manual
 // @see https://github.com/redux-saga/redux-saga#sagasjs
@@ -46,13 +46,13 @@ export default mySaga
 ### `watchActions(sagaMap)`
 
 ```js
-import { watchActions } from 'redux-saga-actions'
+import { watchActions } from 'redux-saga-watch-actions'
 ```
 
 This creates a `rootSaga` from the `sagaMap` which will use [`takeEvery`](https://redux-saga.github.io/redux-saga/docs/api/index.html#takeeverypattern-saga-args) to map actions to sagas.
 
 ```js
-import { watchActions } from 'redux-saga-actions'
+import { watchActions } from 'redux-saga-watch-actions'
 import { INCREMENT, DECREMENT } from './constants' // <-- define constants for the actions you plan to dispatch
 import { increment, decrement } from './sagas' // <-- define sagas the way you normally would
 
@@ -66,13 +66,13 @@ export default rootSaga
 ### `createWatcher(actionType, saga)`
 
 ```js
-import { createWatcher } from 'redux-saga-actions'
+import { createWatcher } from 'redux-saga-watch-actions'
 ```
 
 You don't normally need to call `createWatcher` yourself. Used internally by `watchActions`. Returns a generator function that uses `takeEvery(actionType, saga)` to respond to dispatched actions. Compare to `mySaga` in the [redux-saga usage example](https://github.com/redux-saga/redux-saga#sagasjs).
 
 ```js
-import { createWatcher } from 'redux-saga-actions'
+import { createWatcher } from 'redux-saga-watch-actions'
 import { INCREMENT } from './constants'
 import { increment } from './sagas'
 
