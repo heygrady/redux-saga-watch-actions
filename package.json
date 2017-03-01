@@ -1,12 +1,18 @@
 {
   "name": "redux-saga-watch-actions",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Easily create watchers to map actions to sagas",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/heygrady/redux-saga-watch-actions.git"
   },
-  "keywords": [],
+  "keywords": [
+    "redux",
+    "redux-saga",
+    "saga",
+    "redux-actions",
+    "actions"
+  ],
   "bugs": {
     "url": "https://github.com/heygrady/redux-saga-watch-actions/issues"
   },
