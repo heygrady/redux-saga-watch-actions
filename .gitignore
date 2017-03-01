@@ -1,2 +1,12 @@
+.DS_STORE
+*.log
+
 node_modules
-build
+
+_fun
+dist
+es
+lib
+coverage
+_book
+todo.md

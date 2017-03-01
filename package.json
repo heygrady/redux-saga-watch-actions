@@ -1,36 +1,102 @@
 {
-  "name": "redux-saga-actions",
+  "name": "redux-saga-watch-actions",
   "version": "0.0.1",
-  "description": "Easily create watchers for actions",
-  "main": "build/index.js",
-  "files": [
-    "build"
-  ],
-  "repository": "git@github.com:heygrady/redux-saga-actions.git",
+  "description": "Easily create watchers to map actions to sagas",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/heygrady/redux-saga-watch-actions.git"
+  },
+  "keywords": [],
+  "bugs": {
+    "url": "https://github.com/heygrady/redux-saga-watch-actions/issues"
+  },
+  "homepage": "https://github.com/heygrady/redux-saga-watch-actions#readme",
   "author": "Grady Kuhnline <github@heygrady.net>",
   "license": "MIT",
-  "config": {
-    "presets": [
-      "neutrino-preset-standard",
-      "neutrino-preset-node",
-      "neutrino-preset-jest",
-      "neutrino-custom.js"
-    ]
-  },
+  "browser": "dist/redux-saga-watch-actions.js",
+  "main": "lib/index.js",
+  "module": "es/index.js",
+  "jsnext:main": "es/index.js",
+  "files": [
+    "dist",
+    "lib",
+    "es",
+    "src"
+  ],
   "scripts": {
-    "test": "neutrino test",
-    "start": "neutrino start && node build/index.js",
-    "build": "neutrino build",
-    "prepublish": "yarn build"
+    "clean": "rimraf lib dist es coverage",
+    "lint": "yarn lint:src && yarn lint:examples",
+    "lint:src": "eslint src test build",
+    "lint:examples": "eslint examples",
+    "test": "cross-env BABEL_ENV=commonjs jest",
+    "test:watch": "yarn test -- --watch",
+    "test:cov": "yarn test -- --coverage",
+    "test:examples": "babel-node examples/testAll.js",
+    "check:src": "yarn lint:src && yarn test",
+    "check:examples": "yarn build:examples && yarn lint:examples && yarn test:examples",
+    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build:umd": "cross-env BABEL_ENV=commonjs NODE_ENV=development webpack src/index.js dist/redux-saga-watch-actions.js",
+    "build:umd:min": "cross-env BABEL_ENV=commonjs NODE_ENV=production webpack src/index.js dist/redux-saga-watch-actions.min.js",
+    "build:examples": "babel-node examples/buildAll.js",
+    "build": "yarn build:commonjs && yarn build:es && yarn build:umd && yarn build:umd:min",
+    "dev": "watch 'yarn build:commonjs' ./src",
+    "prepublish": "yarn clean && yarn check:src && yarn build",
+    "docs:clean": "rimraf _book",
+    "docs:prepare": "gitbook install",
+    "docs:build": "yarn docs:prepare && gitbook build -g reactjs/redux && cp logo/apple-touch-icon.png _book/gitbook/images/apple-touch-icon-precomposed-152.png && cp logo/favicon.ico _book/gitbook/images",
+    "docs:watch": "yarn docs:prepare && gitbook serve",
+    "docs:publish": "yarn docs:clean && yarn docs:build && cp CNAME _book && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:reactjs/redux gh-pages --force"
   },
   "devDependencies": {
-    "neutrino": "^4.2.1",
-    "neutrino-preset-jest": "^4.2.1",
-    "neutrino-preset-node": "^4.2.1",
-    "neutrino-preset-standard": "^4.3.3",
-    "redux-saga": "^0.14.3"
+    "babel-cli": "^6.18.0",
+    "babel-core": "^6.21.0",
+    "babel-eslint": "^7.1.1",
+    "babel-jest": "^18.0.0",
+    "babel-loader": "^6.2.10",
+    "babel-plugin-transform-es2015-modules-commonjs": "^6.18.0",
+    "babel-plugin-transform-runtime": "^6.9.0",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-react": "^6.5.0",
+    "babel-preset-stage-0": "^6.5.0",
+    "babel-register": "^6.9.0",
+    "cross-env": "^3.1.3",
+    "eslint": "^3.12.2",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-config-standard-react": "^4.2.0",
+    "eslint-plugin-flowtype": "^2.4.0",
+    "eslint-plugin-jasmine": "^2.2.0",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-react": "^6.8.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "eslint-watch": "^2.1.11",
+    "jest": "^18.0.0",
+    "mocha": "^3.2.0",
+    "nodemon": "^1.9.2",
+    "redux-saga": "^0.14.3",
+    "rimraf": "^2.5.4",
+    "watch": "^1.0.1",
+    "webpack": "^1.14.0"
   },
   "peerDependencies": {
     "redux-saga": "^0.14.3"
+  },
+  "npmName": "redux-saga-watch-actions",
+  "npmFileMap": [
+    {
+      "basePath": "/dist/",
+      "files": [
+        "*.js"
+      ]
+    }
+  ],
+  "jest": {
+    "modulePaths": [
+      "<rootDir>/src/"
+    ],
+    "testPathDirs": [
+      "tests"
+    ],
+    "testRegex": "(/tests/.*\\.spec.js)$"
   }
 }
