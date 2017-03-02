@@ -42,6 +42,34 @@ const mySaga = watchActions({
 export default mySaga
 ```
 
+### What does `watchActions` do?
+It's a convenience method that removes the boilerplate of having to use [`takeEvery`](https://redux-saga.github.io/redux-saga/docs/api/index.html#takeeverypattern-saga-args) to hook your saga up to actions.
+
+```js
+import { takeEvery } from 'redux-saga/effects'
+import { watchActions } from 'redux-saga-watch-actions'
+
+// grab action constants and sagas from your app
+import { INCREMENT, DECREMENT } from './constants'
+import { increment, decrement } from './sagas'
+
+// without watch actions
+const rootSaga = function * () {
+  yield [
+    takeEvery(INCREMENT, increment),
+    takeEvery(DECREMENT, decrement)
+  ]
+}
+
+// with watch actions
+// compare to handleActions
+// @see https://github.com/acdlite/redux-actions#handleactionsreducermap-defaultstate
+const rootSaga = watchActions({
+  [INCREMENT]: increment,
+  [DECREMENT]: decrement
+})
+```
+
 ## Usage
 ### `watchActions(sagaMap)`
 
@@ -49,12 +77,12 @@ export default mySaga
 import { watchActions } from 'redux-saga-watch-actions'
 ```
 
-This creates a `rootSaga` from the `sagaMap` which will use [`takeEvery`](https://redux-saga.github.io/redux-saga/docs/api/index.html#takeeverypattern-saga-args) to map actions to sagas.
+This creates a `rootSaga` from the `sagaMap` which will use [`takeEvery`](https://redux-saga.github.io/redux-saga/docs/api/index.html#takeeverypattern-saga-args) to map actions to sagas. Internally, this calls `createWatcher()` to create a saga for each action type.
 
 ```js
 import { watchActions } from 'redux-saga-watch-actions'
-import { INCREMENT, DECREMENT } from './constants' // <-- define constants for the actions you plan to dispatch
-import { increment, decrement } from './sagas' // <-- define sagas the way you normally would
+import { INCREMENT, DECREMENT } from './constants'
+import { increment, decrement } from './sagas'
 
 const rootSaga = watchActions({
   [INCREMENT]: increment,
