@@ -109,4 +109,4 @@ export default mySaga
 ```
 
 ### Middleware
-You might want to read about the included [middleware](./docs/middelware.md).
+You might want to read about the included [middleware](https://github.com/heygrady/redux-saga-watch-actions/blob/master/docs/middleware.md).
