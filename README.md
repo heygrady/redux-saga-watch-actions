@@ -107,3 +107,6 @@ import { increment } from './sagas'
 const mySaga = createWatcher(INCREMENT, increment)
 export default mySaga
 ```
+
+### Middleware
+You might want to read about the included [middleware](./docs/middelware.md).
