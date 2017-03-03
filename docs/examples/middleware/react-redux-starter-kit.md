@@ -1,18 +1,8 @@
-# Middleware
-This package also includes some boilerplate that's helpful for creating middleware. It is modeled after the [`reducers.js`](https://github.com/davezuko/react-redux-starter-kit/blob/master/src/store/reducers.js) in [react-redux-starter-kit](https://github.com/davezuko/react-redux-starter-kit). If you need to pass advanced options to `createSagaMiddleware` this may not be for you. But if you're trying to integrate saga with `react-redux-starter-kit`, keep reading.
+# react-redux-starter-kit
 
-## Installation
+This example showcases using the included [middleware](../../middleware/README.md) with the [react-redux-starter-kit](https://github.com/davezuko/react-redux-starter-kit).
 
-```
-yarn add redux-saga redux-saga-watch-actions
-```
-
-*NOTE:* [`redux-saga`](https://github.com/redux-saga/redux-saga) must be installed as a peer dependency.
-
-## Example Usage
-This example presumes you're trying to manage sagas similarly to [the way reducers are managed for routes](https://github.com/davezuko/react-redux-starter-kit/blob/master/src/routes/Counter/index.js) in the [react-redux-starter-kit](https://github.com/davezuko/react-redux-starter-kit). At a high level, we're going to cover injecting a saga when a route is loaded. In the starter-kit, routes are lazy-loaded using Webpack's code-splitting features.
-
-This could probably be adapted to other starter kits. I would happily accept pull requests of docs for any other starter kit.
+This example presumes you're trying to manage sagas similarly to [the way reducers are managed for routes](https://github.com/davezuko/react-redux-starter-kit/blob/master/src/routes/Counter/index.js). At a high level, we're going to cover injecting a saga when a route is loaded. In the starter-kit, routes are lazy-loaded using Webpack's code-splitting features.
 
 ### Create a `src/store/sagas.js` file
 The react-redux-starter-kit already includes a [`src/store/reducers.js`](https://github.com/davezuko/react-redux-starter-kit/blob/master/src/store/reducers.js) file for injecting reducers into your application. Behind the scenes, `injectReducer` will add a reducer to the store when a route has loaded. The idea here is to mimic that functionality for injecting sagas. To do this we'll expose an `injectSaga` method that would be using within a route to manage lazy-loaded sagas. Again, this is similar to the way that reducers are managed for routes in the starter-kit.
@@ -152,79 +142,3 @@ export default function counterReducer (state = initialState, action) {
   return handler ? handler(state, action) : state
 }
 ```
-
-## Usage
-
-### `injectSaga({ key, saga })`
-
-```js
-import { injectSaga } from 'redux-saga-watch-actions/lib/middleware'
-```
-
-Used for injecting a saga in a lazy-loaded route
-
-```js
-import { injectSaga } from 'redux-saga-watch-actions/lib/middleware'
-
-export default (store) => ({
-  path : 'counter',
-  getComponent (nextState, cb) {
-    require.ensure([], (require) => {
-      const Counter = require('./containers/CounterContainer').default
-      const saga = require('./modules/counter').rootSaga
-
-      injectSaga({ key: 'counter', saga })
-
-      cb(null, Counter)
-    }, 'counter')
-  }
-})
-
-```
-
-### `cancelTask(key)`
-
-```js
-import { cancelTask } from 'redux-saga-watch-actions/lib/middleware'
-```
-
-Used internally by injectSaga to cancel a previously running saga. You could also use it to cancel a saga when leaving a route. You usually don't need to cancel sagas yourself.
-
-```js
-import { injectSaga, cancelTask } from 'redux-saga-watch-actions/lib/middleware'
-
-export default (store) => ({
-  path : 'counter',
-  getComponent (nextState, cb) {
-    require.ensure([], (require) => {
-      const Counter = require('./containers/CounterContainer').default
-      const saga = require('./modules/counter').rootSaga
-
-      injectSaga({ key: 'counter', saga })
-
-      cb(null, Counter)
-    }, 'counter')
-  },
-  onLeave (prevState) {
-    cancelTask('counter')
-  }
-})
-
-```
-
-
-### `runSaga(saga)`
-
-```js
-import { runSaga } from 'redux-saga-watch-actions/lib/middleware'
-```
-
-Used for running a saga. This is *exactly* the same as [`sagaMiddleware.run(saga)`](https://redux-saga.github.io/redux-saga/docs/api/index.html#middlewarerunsaga-args).
-
-### `sagaMiddleware`
-
-```js
-import sagaMiddleware from 'redux-saga-watch-actions/lib/middleware'
-```
-
-Used for adding redux-saga as middleware. This is *exactly* the same as the `sagaMiddleware` returned from  [`createSagaMiddleware()`](https://redux-saga.github.io/redux-saga/docs/api/index.html#createsagamiddlewareoptions).
