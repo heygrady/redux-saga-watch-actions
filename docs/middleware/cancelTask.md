@@ -1,4 +1,4 @@
-# Middleware: cancelTask
+# Middleware : cancelTask
 
 ### `cancelTask(key)`
 

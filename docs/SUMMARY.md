@@ -1,6 +1,6 @@
 # redux-saga-watch-actions
 
-* [Readme](./README.md)
+* [redux-saga-watch-actions](./README.md)
 
 ### API
 

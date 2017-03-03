@@ -1,4 +1,4 @@
-# Middleware: injectSaga
+# Middleware : injectSaga
 
 ### `injectSaga({ key, saga })`
 
