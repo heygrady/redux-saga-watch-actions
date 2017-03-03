@@ -9,6 +9,10 @@ yarn add redux-saga redux-saga-watch-actions
 
 *NOTE:* [`redux-saga`](https://github.com/redux-saga/redux-saga) must be installed as a peer dependency.
 
+## Docs
+
+- https://heygrady.github.io/redux-saga-watch-actions/
+
 ## Example Usage
 
 Below is an example usage that matches closely to the `fetchUser` [example in the redux-saga readme](https://github.com/redux-saga/redux-saga#sagasjs).
@@ -109,4 +113,4 @@ export default mySaga
 ```
 
 ### Middleware
-You might want to read about the included [middleware](./blob/master/docs/middleware/README.md).
+You might want to read about the included [middleware](./docs/middleware/README.md).
