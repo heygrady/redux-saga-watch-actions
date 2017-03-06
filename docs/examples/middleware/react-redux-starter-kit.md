@@ -36,7 +36,7 @@ The react-redux-starter-kit already includes a [`src/store/createStore.js`](http
 // @see https://github.com/davezuko/react-redux-starter-kit/blob/master/src/store/createStore.js
 
 // grab the middleware and rootSaga
-import saga, { runSaga, rootSaga }
+import saga, { runSaga, rootSaga } from './sagas'
 
 export default (initialState = {}) => {
   // ...
