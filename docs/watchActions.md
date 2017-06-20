@@ -23,3 +23,15 @@ const rootSaga = watchActions({
 })
 export default rootSaga
 ```
+
+#### Example sagas.js
+
+```js
+export const increment = function * (action) {
+  // ... whatever you want
+}
+
+export const decrement = function * (action) {
+  // ... whatever you want
+}
+```

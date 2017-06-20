@@ -1,4 +1,4 @@
-import { takeEvery } from 'redux-saga/effects'
+import { all, takeEvery } from 'redux-saga/effects'
 
 export const createWatcher = (actionType, saga) => {
   return function * () {
@@ -6,10 +6,16 @@ export const createWatcher = (actionType, saga) => {
   }
 }
 
+export const createWatchers = (sagas = {}) => Object.keys(sagas)
+  .map(actionType =>
+    createWatcher(actionType, sagas[actionType])()
+  )
+
 export const watchActions = (sagas) => {
-  const watchers = Object.keys(sagas)
-    .map(actionType => createWatcher(actionType, sagas[actionType])())
+  const watchers = createWatchers(sagas)
   return function * rootSaga () {
-    yield watchers
+    yield all(watchers)
   }
 }
+
+export default watchActions

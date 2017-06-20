@@ -9,21 +9,26 @@ The react-redux-starter-kit already includes a [`src/store/reducers.js`](https:/
 
 ```js
 // src/store/sagas.js
-import sagaMiddleware, { runSaga, injectSaga, cancelTask } from 'redux-saga-watch-actions/lib/middleware'
+import createSagaMiddleware from 'redux-saga'
+import { createInjectSaga, cancelTask } from 'redux-saga-watch-actions/lib/middleware'
+import { all } from 'redux-saga/effects'
 
 // you might want to import sagas that run outside of a route
-// import { rootSaga as mySaga } from '../modules/my-module'
+import { rootSaga as somethingSaga } from '../modules/something'
 
-export { runSaga, injectSaga, cancelTask }
+const sagaMiddleware = createSagaMiddleware()
+export const runSaga = saga => sagaMiddleware.run(saga)
+export const injectSaga = createInjectSaga(runSaga, cancelTask)
+export const killSaga = cancelTask
 
-export function * rootSaga () {
-  yield [
-    // you would add your sagas here (for lazy-loaded sagas, see below)
-    // mySaga()
-  ]
+export const rootSaga = function * () {
+  yield all([
+    somethingSaga()
+  ])
 }
 
 export default sagaMiddleware
+
 ```
 
 ### Configure middleware, run saga in `src/store/createStore.js`
@@ -47,6 +52,7 @@ export default (initialState = {}) => {
   //...
 
   // make sure to run our rootSaga
+  store.runSaga = rootSaga
   runSaga(rootSaga)
 
   return store

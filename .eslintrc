@@ -1,20 +1,21 @@
 {
-  "parser"  : "babel-eslint",
-  "extends" : [
+  "parser": "babel-eslint",
+  "extends": [
     "standard",
     "standard-react"
   ],
-  "env"     : {
+  "plugins": ["markdown"],
+  "env": {
     "browser" : true
   },
-  "globals" : {
+  "globals": {
     "__DEV__"      : false,
     "__PROD__"     : false,
     "__DEBUG__"    : false,
     "__COVERAGE__" : false
   },
   "rules": {
-    "semi" : [2, "never"],
+    "semi": [2, "never"],
     "max-len": [2, 120, 2]
   }
 }
