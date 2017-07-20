@@ -37,7 +37,7 @@ const rootSaga = watchActions({
 
 ## API
 - [`watchActions(sagaMap)`](./watchActions.md)
-- [`createWatcher(actionType, saga)`](./createWatcher.md) 
+- [`createWatcher(actionType, saga)`](./createWatcher.md)
 
 
 ### Middleware

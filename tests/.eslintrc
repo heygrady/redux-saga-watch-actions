@@ -1,8 +1,0 @@
-{
-  "plugins": ["jasmine"],
-  "extends": "plugin:jasmine/recommended",
-  "env": {
-    "jest": true,
-    "jasmine": true
-  }
-}

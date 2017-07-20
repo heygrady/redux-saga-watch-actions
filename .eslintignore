@@ -1,9 +1,6 @@
-_fun/**
-blueprints/**/files/**
-coverage/**
+
 dist/**
-es/**
-lib/**
 node_modules/**
-*.spec.js
 src/index.html
+flow-typed/**
+_fun/**
