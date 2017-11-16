@@ -42,6 +42,7 @@
     "test": "cross-env BABEL_ENV=commonjs jest",
     "test:watch": "yarn test -- --watch",
     "test:cov": "yarn test -- --coverage",
+    "test:cov:report": "yarn test:cov && cd coverage/lcov-report && http-server -c-1",
     "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
     "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
     "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
@@ -106,7 +107,7 @@
     "http-server": "^0.10.0",
     "jest": "^20.0.4",
     "onchange": "^3.2.1",
-    "redux-saga": "^0.15.4",
+    "redux-saga": "^0.16.0",
     "rimraf": "^2.6.1",
     "rollup": "^0.45.2",
     "rollup-plugin-babel": "^2.7.1",
@@ -115,7 +116,7 @@
     "rollup-plugin-uglify": "^2.0.1"
   },
   "peerDependencies": {
-    "redux-saga": "^0.15.3"
+    "redux-saga": "^0.16.0"
   },
   "npmName": "redux-saga-watch-actions",
   "npmFileMap": [
@@ -133,11 +134,14 @@
   },
   "jest": {
     "testPathIgnorePatterns": [
-      "node_modules",
-      "_fun",
-      "_book",
-      "examples"
+      "/node_modules/",
+      "/_fun/",
+      "/_book/",
+      "/examples/"
     ],
     "testRegex": "(/test/.*\\.spec.js)$"
+  },
+  "dependencies": {
+    "invariant": "^2.2.2"
   }
 }

@@ -4,13 +4,13 @@
 
 This creates a `rootSaga` from the `sagaMap` which will use [`takeEvery`](https://redux-saga.github.io/redux-saga/docs/api/index.html#takeeverypattern-saga-args) to map actions to sagas. Internally, this calls `createWatcher()` to create a saga for each action type.
 
-#### Importing
+## Importing
 
 ```js
 import { watchActions } from 'redux-saga-watch-actions'
 ```
 
-#### Example
+## Example
 
 ```js
 import { watchActions } from 'redux-saga-watch-actions'
