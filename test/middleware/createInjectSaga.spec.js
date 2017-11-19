@@ -1,57 +1,6 @@
-import createSagaMiddlewareHelpers, { createCancelTask, createInjectSaga } from '../src/middleware'
+import { createInjectSaga } from '../../src/middleware'
 
 describe('Redux Saga Watch Actions', () => {
-  describe('createCancelTask', () => {
-    it('should return a function', () => {
-      const result = createCancelTask()
-      expect(typeof result).toBe('function')
-    })
-  })
-
-  describe('cancelTask', () => {
-    let tasks
-    let task
-    let cancelTask
-    const key = 'test'
-    const prevSaga = () => {}
-
-    beforeEach(() => {
-      tasks = {}
-      task = {
-        cancel: jest.fn()
-      }
-      cancelTask = createCancelTask(tasks)
-    })
-
-    it('should return undefined (no key)', () => {
-      const result = cancelTask()
-      expect(result).toBeUndefined()
-    })
-
-    it('should return undefined (missing key)', () => {
-      const result = cancelTask(key)
-      expect(result).toBeUndefined()
-    })
-
-    it('should not call task.cancel', () => {
-      tasks[key] = { task: undefined, prevSaga }
-      cancelTask(key)
-      expect(task.cancel).not.toBeCalled()
-    })
-
-    it('should call task.cancel', () => {
-      tasks[key] = { task, prevSaga }
-      cancelTask(key)
-      expect(task.cancel).toBeCalled()
-    })
-
-    it('should delete task', () => {
-      tasks[key] = { task, prevSaga }
-      cancelTask(key)
-      expect(tasks[key]).toBeUndefined()
-    })
-  })
-
   describe('createInjectSaga', () => {
     it('should return a function', () => {
       const result = createInjectSaga()
@@ -79,48 +28,48 @@ describe('Redux Saga Watch Actions', () => {
     })
 
     it('should throw (no nothing)', () => {
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       expect(injectSaga).toThrow()
     })
 
     it('should throw (no key)', () => {
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       expect(() => injectSaga({ saga })).toThrow(/key/)
     })
 
     it('should throw (no saga)', () => {
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       expect(() => injectSaga({ key })).toThrow(/saga/)
     })
 
     it('should throw (bad args)', () => {
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       expect(() => injectSaga({ key, saga, args: true })).toThrow(/args/)
     })
 
     it('should return a task', () => {
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       const result = injectSaga({ key, saga })
       expect(result).toBe(task)
     })
 
     it('should allow args', () => {
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       injectSaga({ key, saga, args: [] })
       expect(cancelTask).not.toBeCalled()
     })
 
     it('should not cancel a task', () => {
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       injectSaga({ key, saga })
       expect(cancelTask).not.toBeCalled()
     })
 
     it('should cancel a task', () => {
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       const newSaga = () => {}
       injectSaga({ key, saga: newSaga })
       expect(cancelTask).toBeCalled()
@@ -128,14 +77,14 @@ describe('Redux Saga Watch Actions', () => {
 
     it('should not update the task', () => {
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       injectSaga({ key, saga })
       expect(tasks[key].prevSaga).toBe(saga)
     })
 
     it('should update the task', () => {
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       const newSaga = () => {}
       injectSaga({ key, saga: newSaga })
       expect(tasks[key].prevSaga).toBe(newSaga)
@@ -143,7 +92,7 @@ describe('Redux Saga Watch Actions', () => {
 
     it('should not rerun the saga', () => {
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       injectSaga({ key, saga })
       expect(runSaga).not.toBeCalled()
     })
@@ -154,26 +103,9 @@ describe('Redux Saga Watch Actions', () => {
         isRunning: jest.fn().mockImplementation(() => false)
       }
       tasks = { [key]: { task, prevSaga: saga } }
-      injectSaga = createInjectSaga(runSaga, cancelTask, tasks)
+      injectSaga = createInjectSaga(tasks, cancelTask, runSaga)
       injectSaga({ key, saga })
       expect(runSaga).toBeCalled()
-    })
-  })
-
-  describe('createSagaMiddlewareHelpers', () => {
-    it('should return an object', () => {
-      const result = createSagaMiddlewareHelpers()
-      expect(typeof result).toBe('object')
-    })
-
-    it('should contain cancelTask', () => {
-      const { cancelTask } = createSagaMiddlewareHelpers()
-      expect(typeof cancelTask).toBe('function')
-    })
-
-    it('should contain injectSaga', () => {
-      const { injectSaga } = createSagaMiddlewareHelpers()
-      expect(typeof injectSaga).toBe('function')
     })
   })
 })

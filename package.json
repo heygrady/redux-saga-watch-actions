@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-watch-actions",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Easily create watchers to map actions to sagas",
   "repository": {
     "type": "git",
