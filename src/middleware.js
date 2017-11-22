@@ -12,7 +12,6 @@ export const createCancelTask = tasks => key => {
 
 export const createCancelAllTasks = (tasks, cancelTask) => () => Object.keys(tasks).map(key => cancelTask(key))
 
-// TODO: is ordered option better?
 export const createInjectSaga = (tasks, cancelTask, runSaga) => ({ key, saga, args } = {}) => {
   invariant(key, 'injectSaga expects a key option to identify this saga')
   invariant(saga, 'injectSaga expects a saga option to specify which saga to run')
@@ -51,7 +50,7 @@ const createSagaMiddlewareHelpers = (sagaMiddleware, tasks = {}) => {
     sagaMiddleware && typeof sagaMiddleware.run === 'function',
     'createSagaMiddlewareHelpers expects a sagaMiddleware to include a run method'
   )
-  const runSaga = sagaMiddleware.run.bind(sagaMiddleware)
+  const runSaga = (...args) => sagaMiddleware.run(...args)
   const cancelTask = createCancelTask(tasks)
   const cancelAllTasks = createCancelAllTasks(tasks, cancelTask)
   const injectSaga = createInjectSaga(tasks, cancelTask, runSaga)

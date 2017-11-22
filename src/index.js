@@ -1,7 +1,7 @@
 import { all, fork, take, takeEvery } from 'redux-saga/effects'
 
-export const combineSagas = (sagas = []) => function * (...args) {
-  yield all(sagas.map(saga => saga(...args)))
+export const combineSagas = (...sagas) => function * (...args) {
+  yield all(sagas.map(saga => fork(saga, ...args)))
 }
 
 export const watchNextAction = (actionType, saga) => function * (...args) {

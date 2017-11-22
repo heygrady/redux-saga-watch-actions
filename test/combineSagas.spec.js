@@ -18,31 +18,31 @@ describe('Redux Saga Watch Actions', () => {
       const a = jest.fn()
       const b = jest.fn()
       const c = jest.fn()
-      const saga = combineSagas([a, b, c])
+      const saga = combineSagas(a, b, c)
       const gen = saga()
       const result = gen.next().value
       expect(result.ALL.length).toBe(3)
     })
 
-    it('should call each saga', () => {
+    it('should fork each saga', () => {
       const a = jest.fn()
       const b = jest.fn()
-      const saga = combineSagas([a, b])
+      const saga = combineSagas(a, b)
       const gen = saga()
-      gen.next()
-      expect(a).toHaveBeenCalled()
-      expect(b).toHaveBeenCalled()
+      const result = gen.next().value
+      expect(result.ALL[0].FORK.fn).toBe(a)
+      expect(result.ALL[1].FORK.fn).toBe(b)
     })
 
-    it('should call each saga with same args', () => {
+    it('should fork each saga with same args', () => {
       const a = jest.fn()
       const b = jest.fn()
-      const saga = combineSagas([a, b])
+      const saga = combineSagas(a, b)
       const args = [true, false]
       const gen = saga(...args)
-      gen.next()
-      expect(a).toHaveBeenCalledWith(...args)
-      expect(b).toHaveBeenCalledWith(...args)
+      const result = gen.next().value
+      expect(result.ALL[0].FORK.args).toEqual(args)
+      expect(result.ALL[1].FORK.args).toEqual(args)
     })
   })
 })
