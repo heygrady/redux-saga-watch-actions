@@ -10,7 +10,7 @@ Used internally by `injectSaga` to cancel a previously running saga. You could a
 import { injectSaga, cancelTask } from './store/sagas' // <-- you need to create your own
 
 const key = 'anything' // <-- used to avoid duplicated sagas
-const saga = function * () {} // <-- any generator will do
+const saga = function*() {} // <-- any generator will do
 
 const task = injectSaga({ key, saga })
 
@@ -31,7 +31,7 @@ import createSagaMiddleware from 'redux-saga'
 import createSagaMiddlewareHelpers from 'redux-saga-watch-actions/lib/middleware'
 
 const sagaMiddleware = createSagaMiddleware()
-const runSaga = saga => sagaMiddleware.run(saga)
+const runSaga = (saga) => sagaMiddleware.run(saga)
 const { injectSaga, cancelTask } = createSagaMiddlewareHelpers(runSaga) // <-- bind to sagaMiddleware.run
 
 export { cancelTask, injectSaga, runSaga }
@@ -48,19 +48,24 @@ Below you can see a classic react-router 3 route. The route below uses webpack's
 import { injectSaga, cancelTask } from './store/sagas'
 
 export default () => ({
-  path : 'counter',
-  getComponent (nextState, cb) {
-    require.ensure([], (require) => {
-      const CounterContainer = require('./containers/CounterContainer').default
-      const saga = require('./modules/counter').rootSaga
+  path: 'counter',
+  getComponent(nextState, cb) {
+    require.ensure(
+      [],
+      (require) => {
+        const CounterContainer = require('./containers/CounterContainer')
+          .default
+        const saga = require('./modules/counter').rootSaga
 
-      injectSaga({ key: 'counter', saga })
+        injectSaga({ key: 'counter', saga })
 
-      cb(null, CounterContainer)
-    }, 'counter')
+        cb(null, CounterContainer)
+      },
+      'counter'
+    )
   },
-  onLeave (prevState) {
+  onLeave(prevState) {
     cancelTask('counter') // <-- on leave, cancel task
-  }
+  },
 })
 ```

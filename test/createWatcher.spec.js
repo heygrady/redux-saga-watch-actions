@@ -13,7 +13,7 @@ describe('Redux Saga Watch Actions', () => {
       const watcher = createWatcher(actionType, saga)
       const gen = watcher()
       const result = gen.next().value
-      const args = result.FORK.args
+      const args = result.payload.args
       expect(args).toEqual([actionType, saga])
     })
   })

@@ -21,10 +21,10 @@ describe('Redux Saga Watch Actions', () => {
       tasks = {}
       task = {
         cancel: jest.fn(),
-        isRunning: jest.fn().mockImplementation(() => true)
+        isRunning: jest.fn().mockImplementation(() => true),
       }
       cancelTask = jest.fn()
-      runSaga = jest.fn().mockImplementation(saga => task)
+      runSaga = jest.fn().mockImplementation((saga) => task)
     })
 
     it('should throw (no nothing)', () => {
@@ -100,7 +100,7 @@ describe('Redux Saga Watch Actions', () => {
     it('should rerun the saga', () => {
       task = {
         cancel: jest.fn(),
-        isRunning: jest.fn().mockImplementation(() => false)
+        isRunning: jest.fn().mockImplementation(() => false),
       }
       tasks = { [key]: { task, prevSaga: saga } }
       injectSaga = createInjectSaga(tasks, cancelTask, runSaga)

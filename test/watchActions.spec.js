@@ -11,16 +11,16 @@ describe('Redux Saga Watch Actions', () => {
       const actionType = 'ACTION'
       const saga = 'func'
       const result = watchActions({
-        [actionType]: saga
+        [actionType]: saga,
       })
       expect(typeof result).toBe('function')
     })
 
-    it('should return a rootSaga', () => {
+    it('should return a rootSaga (with a next func)', () => {
       const actionType = 'ACTION'
       const saga = 'func'
       const rootSaga = watchActions({
-        [actionType]: saga
+        [actionType]: saga,
       })
       const result = rootSaga()
       expect(typeof result.next).toBe('function')
@@ -30,29 +30,29 @@ describe('Redux Saga Watch Actions', () => {
       const actionType = 'ACTION'
       const saga = 'func'
       const rootSaga = watchActions({
-        [actionType]: saga
+        [actionType]: saga,
       })
       const result = rootSaga().next().value
-      expect(Array.isArray(result.ALL)).toBe(true)
+      expect(Array.isArray(result.payload)).toBe(true)
     })
 
     it('should return an empty array', () => {
       const rootSaga = watchActions()
       const result = rootSaga().next().value
-      const watchers = result.ALL
+      const watchers = result.payload
       expect(Array.isArray(watchers)).toBe(true)
-      expect(watchers.length).toBe(0)
+      expect(watchers).toHaveLength(0)
     })
 
-    it.skip('should return an array of generator instances', () => {
-      const actionType = 'ACTION'
-      const saga = 'func'
-      const rootSaga = watchActions({
-        [actionType]: saga
-      })
-      const result = rootSaga().next().value
-      const watchers = result.ALL
-      expect(typeof watchers[0].next).toBe('function')
-    })
+    // it.skip('should return an array of generator instances', () => {
+    //   const actionType = 'ACTION'
+    //   const saga = 'func'
+    //   const rootSaga = watchActions({
+    //     [actionType]: saga,
+    //   })
+    //   const result = rootSaga().next().value
+    //   const watchers = result.ALL
+    //   expect(typeof watchers[0].next).toBe('function')
+    // })
   })
 })

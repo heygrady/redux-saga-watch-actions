@@ -8,7 +8,6 @@ Used for injecting a saga in a lazy-loaded route. Below you can see an example w
 [react-redux-starter-kit]: https://github.com/davezuko/react-redux-starter-kit
 [run-saga]: https://github.com/redux-saga/redux-saga/tree/master/docs/api#middlewarerunsaga-args
 
-
 - `key` &mdash; any value that can be used as an [object key](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Objects_and_properties)
 - `saga` &mdash; any value that can be passed to `runSaga`
 - `args` &mdash; optional, used like `runSaga(saga, ...args)`
@@ -17,7 +16,7 @@ Used for injecting a saga in a lazy-loaded route. Below you can see an example w
 import { injectSaga } from './store/sagas' // <-- you need to create your own
 
 const key = 'anything' // <-- used to avoid duplicated sagas
-const saga = function * () {} // <-- any generator will do
+const saga = function*() {} // <-- any generator will do
 
 const task = injectSaga({ key, saga }) // <-- returns a task, like runSaga
 
@@ -35,7 +34,7 @@ import createSagaMiddleware from 'redux-saga'
 import createSagaMiddlewareHelpers from 'redux-saga-watch-actions/lib/middleware'
 
 const sagaMiddleware = createSagaMiddleware()
-const runSaga = saga => sagaMiddleware.run(saga)
+const runSaga = (saga) => sagaMiddleware.run(saga)
 const { injectSaga, cancelTask } = createSagaMiddlewareHelpers(runSaga) // <-- bind to sagaMiddleware.run
 
 export { cancelTask, injectSaga, runSaga }
@@ -52,16 +51,21 @@ Below you can see a classic react-router 3 route. The route below uses webpack's
 import { injectSaga } from './store/sagas' // <-- grab our inject function
 
 export default () => ({
-  path : 'counter',
-  getComponent (nextState, cb) {
-    require.ensure([], (require) => {
-      const CounterContainer = require('./containers/CounterContainer').default
-      const saga = require('./modules/counter').rootSaga // <-- grab our lazy-loaded saga
+  path: 'counter',
+  getComponent(nextState, cb) {
+    require.ensure(
+      [],
+      (require) => {
+        const CounterContainer = require('./containers/CounterContainer')
+          .default
+        const saga = require('./modules/counter').rootSaga // <-- grab our lazy-loaded saga
 
-      injectSaga({ key: 'counter', saga }) // <-- run the saga
+        injectSaga({ key: 'counter', saga }) // <-- run the saga
 
-      cb(null, CounterContainer)
-    }, 'counter')
-  }
+        cb(null, CounterContainer)
+      },
+      'counter'
+    )
+  },
 })
 ```

@@ -19,7 +19,7 @@ import { increment, decrement } from './sagas'
 
 const rootSaga = watchActions({
   [INCREMENT]: increment,
-  [DECREMENT]: decrement
+  [DECREMENT]: decrement,
 })
 export default rootSaga
 ```
@@ -27,11 +27,11 @@ export default rootSaga
 #### Example sagas.js
 
 ```js
-export const increment = function * (action) {
+export const increment = function*(action) {
   // ... whatever you want
 }
 
-export const decrement = function * (action) {
+export const decrement = function*(action) {
   // ... whatever you want
 }
 ```

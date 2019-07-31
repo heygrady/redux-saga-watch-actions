@@ -5,7 +5,7 @@ describe('Redux Saga Watch Actions', () => {
     let sagaMiddleware
     beforeEach(() => {
       sagaMiddleware = {
-        run: jest.fn()
+        run: jest.fn(),
       }
     })
 

@@ -12,7 +12,7 @@ If you're trying to integrate redux-saga with an app that uses code splitting, k
 You might enjoy reading an example implementation.
 
 - [`react-redux-starter-kit`](../examples/middleware/react-redux-starter-kit.md)
-- *NOTE:* This could probably be adapted to other starter kits. I would happily accept pull requests of docs for any other starter kit.
+- _NOTE:_ This could probably be adapted to other starter kits. I would happily accept pull requests of docs for any other starter kit.
 
 ## Setup
 
@@ -25,17 +25,21 @@ import createSagaMiddlewareHelpers from 'redux-saga-watch-actions/lib/middleware
 // import { rootSaga as authSaga } from './modules/auth'
 
 const sagaMiddleware = createSagaMiddleware()
-const runSaga = saga => sagaMiddleware.run(saga)
-const { injectSaga, cancelTask } = createSagaMiddlewareHelpers(runSaga) // <-- bind to sagaMiddleware.run
+const {
+  cancelAllTasks,
+  cancelTask,
+  injectSaga,
+  runSaga,
+} = createSagaMiddlewareHelpers(sagaMiddleware)
 
-export const rootSaga = function * () {
+export const rootSaga = function*() {
   yield all([
     // remember to execute your sagas
     // authSaga()
   ])
 }
 
-export { cancelTask, injectSaga, runSaga }
+export { cancelAllTasks, cancelTask, injectSaga, runSaga }
 export default sagaMiddleware
 ```
 

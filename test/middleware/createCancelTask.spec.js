@@ -8,7 +8,7 @@ describe('Redux Saga Watch Actions', () => {
     })
   })
 
-  describe('cancelTask', () => {
+  describe('cancelAllTasks', () => {
     let tasks
     let task
     let cancelTask
@@ -18,7 +18,7 @@ describe('Redux Saga Watch Actions', () => {
 
     beforeEach(() => {
       tasks = {
-        [key]: { task, prevSaga }
+        [key]: { task, prevSaga },
       }
       cancelTask = jest.fn()
       cancelAllTasks = createCancelAllTasks(tasks, cancelTask)
@@ -32,7 +32,7 @@ describe('Redux Saga Watch Actions', () => {
     it('should return an results for each task', () => {
       const result = cancelAllTasks()
       const num = Object.keys(tasks).length
-      expect(result.length).toBe(num)
+      expect(result).toHaveLength(num)
     })
 
     it('should call cancelTask', () => {
@@ -69,7 +69,7 @@ describe('Redux Saga Watch Actions', () => {
     beforeEach(() => {
       tasks = {}
       task = {
-        cancel: jest.fn()
+        cancel: jest.fn(),
       }
       cancelTask = createCancelTask(tasks)
     })

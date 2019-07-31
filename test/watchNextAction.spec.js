@@ -7,12 +7,12 @@ describe('Redux Saga Watch Actions', () => {
       expect(typeof result).toBe('function')
     })
 
-    it('should return a generator function', () => {
+    it('should return a generator function (that returns a take effect)', () => {
       const actionType = 'ACTION'
       const watcher = watchNextAction(actionType)
       const gen = watcher()
       const effect = gen.next().value
-      const result = effect.TAKE.pattern
+      const result = effect.payload.pattern
       expect(result).toBe(actionType)
     })
 
@@ -33,7 +33,7 @@ describe('Redux Saga Watch Actions', () => {
       const gen = watcher()
       gen.next()
       const effect = gen.next().value
-      const result = effect.FORK.fn
+      const result = effect.payload.fn
       expect(result).toBe(saga)
     })
   })

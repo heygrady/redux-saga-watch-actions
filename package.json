@@ -2,146 +2,110 @@
   "name": "redux-saga-watch-actions",
   "version": "0.2.0",
   "description": "Easily create watchers to map actions to sagas",
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/heygrady/redux-saga-watch-actions.git"
-  },
   "keywords": [
     "redux",
     "redux-saga",
-    "saga",
+    "redux-loop",
     "redux-actions",
+    "saga",
     "actions"
   ],
-  "bugs": {
-    "url": "https://github.com/heygrady/redux-saga-watch-actions/issues"
-  },
-  "homepage": "https://github.com/heygrady/redux-saga-watch-actions#readme",
-  "author": "Grady Kuhnline <github@heygrady.net>",
   "license": "MIT",
+  "author": "Grady Kuhnline <github@heygrady.net>",
+  "homepage": "https://github.com/heygrady/redux-saga-watch-actions#readme",
+  "repository": "github:/heygrady/redux-saga-watch-actions",
+  "bugs": "https://github.com/heygrady/redux-saga-watch-actions/issues",
   "main": "lib/index.js",
+  "unpkg": "dist/redux-saga-watch-actions.js",
   "module": "es/index.js",
-  "jsnext:main": "es/index.js",
   "files": [
     "dist",
     "lib",
     "es",
     "src"
   ],
-  "config": {
-    "account": "heygrady",
-    "name": "redux-saga-watch-actions"
-  },
   "scripts": {
+    "build:commonjs": "cross-env MODULES_ENV=commonjs babel src --out-dir lib",
+    "build:es": "cross-env MODULES_ENV=esmodules babel src --out-dir es",
+    "build:umd": "rollup -c",
+    "build": "yarn build:commonjs && yarn build:es && yarn build:umd",
     "clean": "rimraf lib dist es coverage",
-    "dev": "yarn build:commonjs -- --watch",
-    "start": "echo 'Error: no start script' && exit 1",
-    "start:prod": "cross-env NODE_ENV=production yarn start",
-    "lint": "eslint src test build",
-    "lint:fix": "yarn lint -- --fix",
-    "test": "cross-env BABEL_ENV=commonjs jest",
-    "test:watch": "yarn test -- --watch",
-    "test:cov": "yarn test -- --coverage",
-    "test:cov:report": "yarn test:cov && cd coverage/lcov-report && http-server -c-1",
-    "build": "npm run build:commonjs && npm run build:es && npm run build:umd && npm run build:umd:min",
-    "build:commonjs": "cross-env BABEL_ENV=commonjs babel src --out-dir lib",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
-    "build:umd": "cross-env BABEL_ENV=es NODE_ENV=development rollup -c -i src/index.js -o dist/$npm_package_config_name.js",
-    "build:umd:min": "cross-env BABEL_ENV=es NODE_ENV=production rollup -c -i src/index.js -o dist/$npm_package_config_name.min.js",
-    "deploy": "yarn lint && yarn test && yarn build:prod && echo 'Error: no deploy script' && exit 1",
-    "prepare": "npm run clean && npm run lint && npm test && npm run build",
-    "examples:lint": "eslint examples",
-    "examples:test": "cross-env CI=true babel-node examples/testAll.js",
-    "docs:clean": "rimraf _book",
-    "docs:prepare": "gitbook install",
-    "docs:build:only": "gitbook build -g $npm_package_config_account/$npm_package_config_name",
-    "docs:build": "yarn run docs:prepare && yarn run docs:build:only",
-    "docs:watch:old": "yarn run docs:prepare && gitbook serve",
-    "docs:watch": "nohup onchange 'docs/**/*.md' 'README.md' 'SUMMARY.md' -- yarn run docs:build:only &>/dev/null & yarn docs:serve",
-    "docs:serve": "cd _book && http-server -p4000 -c-1 .",
-    "docs:publish": "yarn run docs:clean && yarn run docs:build && cd _book && git init && git commit --allow-empty -m 'update book' && git checkout -b gh-pages && touch .nojekyll && git add . && git commit -am 'update book' && git push git@github.com:$npm_package_config_account/$npm_package_config_name gh-pages --force && cd .. && yarn add --dev rimraf"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.24.1",
-    "babel-core": "^6.25.0",
-    "babel-eslint": "^7.2.3",
-    "babel-jest": "^20.0.3",
-    "babel-plugin-check-es2015-constants": "^6.22.0",
-    "babel-plugin-transform-es2015-arrow-functions": "^6.22.0",
-    "babel-plugin-transform-es2015-block-scoped-functions": "^6.22.0",
-    "babel-plugin-transform-es2015-block-scoping": "^6.24.1",
-    "babel-plugin-transform-es2015-classes": "^6.24.1",
-    "babel-plugin-transform-es2015-computed-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-destructuring": "^6.23.0",
-    "babel-plugin-transform-es2015-for-of": "^6.23.0",
-    "babel-plugin-transform-es2015-function-name": "^6.24.1",
-    "babel-plugin-transform-es2015-literals": "^6.22.0",
-    "babel-plugin-transform-es2015-modules-commonjs": "^6.24.1",
-    "babel-plugin-transform-es2015-object-super": "^6.24.1",
-    "babel-plugin-transform-es2015-parameters": "^6.24.1",
-    "babel-plugin-transform-es2015-shorthand-properties": "^6.24.1",
-    "babel-plugin-transform-es2015-spread": "^6.22.0",
-    "babel-plugin-transform-es2015-sticky-regex": "^6.24.1",
-    "babel-plugin-transform-es2015-template-literals": "^6.22.0",
-    "babel-plugin-transform-es2015-unicode-regex": "^6.24.1",
-    "babel-plugin-transform-es3-member-expression-literals": "^6.22.0",
-    "babel-plugin-transform-es3-property-literals": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.23.0",
-    "babel-register": "^6.24.1",
-    "cross-env": "^5.0.1",
-    "eslint": "~4.1.1",
-    "eslint-config-react-app": "^1.0.5",
-    "eslint-config-standard": "^10.2.1",
-    "eslint-config-standard-react": "^5.0.0",
-    "eslint-plugin-babel": "^4.1.1",
-    "eslint-plugin-flowtype": "^2.35.0",
-    "eslint-plugin-import": "^2.7.0",
-    "eslint-plugin-jsx-a11y": "^5.0.3",
-    "eslint-plugin-markdown": "^1.0.0-beta.6",
-    "eslint-plugin-node": "^5.1.1",
-    "eslint-plugin-promise": "^3.5.0",
-    "eslint-plugin-react": "^7.1.0",
-    "eslint-plugin-standard": "^3.0.1",
-    "gitbook-cli": "^2.3.2",
-    "http-server": "^0.10.0",
-    "jest": "^20.0.4",
-    "onchange": "^3.2.1",
-    "redux-saga": "^0.16.0",
-    "rimraf": "^2.6.2",
-    "rollup": "^0.45.2",
-    "rollup-plugin-babel": "^2.7.1",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-replace": "^1.1.1",
-    "rollup-plugin-uglify": "^2.0.1",
-    "uglify-es": "^3.1.10"
+    "format": "prettier --write \"{example,src,test}/**/*.{js,jsx,ts,tsx}\" .babelrc.js rollup.config.js .eslintrc.json README.md \"docs/**/*.md\" && yarn lint --fix || true",
+    "lint": "eslint src test",
+    "dedupe": "npx yarn-deduplicate yarn.lock && yarn install",
+    "prepare": "yarn clean && yarn build",
+    "pretest": "yarn lint",
+    "preversion": "yarn format",
+    "postversion": "git push && git push --tags",
+    "test": "jest",
+    "coverage": "jest --coverage"
   },
   "peerDependencies": {
-    "redux-saga": "^0.16.0"
-  },
-  "npmName": "redux-saga-watch-actions",
-  "npmFileMap": [
-    {
-      "basePath": "/dist/",
-      "files": [
-        "*.js"
-      ]
-    }
-  ],
-  "browserify": {
-    "transform": [
-      "loose-envify"
-    ]
-  },
-  "jest": {
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/_fun/",
-      "/_book/",
-      "/examples/"
-    ],
-    "testRegex": "(/test/.*\\.spec.js)$"
+    "redux-saga": "^1.0.5"
   },
   "dependencies": {
-    "invariant": "^2.2.2"
+    "@babel/runtime": "^7.5.5",
+    "tiny-invariant": "^1.0.6"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.5.5",
+    "@babel/core": "^7.5.5",
+    "@zumper/babel-preset-react-app": "9.0.0-zumper.15",
+    "babel-eslint": "^10.0.2",
+    "babel-jest": "^24.8.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.16.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-react-app": "^4.0.1",
+    "eslint-config-standard": "^13.0.1",
+    "eslint-config-standard-react": "^8.0.0",
+    "eslint-plugin-flowtype": "^2.50.3",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jest": "^22.14.0",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-node": "^9.1.0",
+    "eslint-plugin-prettier": "^3.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-react": "^7.14.3",
+    "eslint-plugin-react-hooks": "^1.6.1",
+    "eslint-plugin-standard": "^4.0.0",
+    "fs-extra": "^8.1.0",
+    "jest": "^24.8.0",
+    "jest-pnp-resolver": "^1.2.1",
+    "jest-resolve": "^24.8.0",
+    "lodash": "^4.17.15",
+    "prettier": "^1.18.2",
+    "redux-saga": "^1.0.5",
+    "rimraf": "^2.6.3",
+    "rollup": "^1.17.0",
+    "rollup-plugin-babel": "^4.3.3",
+    "rollup-plugin-commonjs": "^10.0.1",
+    "rollup-plugin-node-resolve": "^5.2.0",
+    "rollup-plugin-replace": "^2.2.0",
+    "rollup-plugin-terser": "^5.1.1"
+  },
+  "jest": {
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts"
+    ],
+    "coverageDirectory": "<rootDir>/coverage/",
+    "coveragePathIgnorePatterns": [
+      "<rootDir>/dist",
+      "<rootDir>/es",
+      "<rootDir>/lib",
+      "<rootDir>/node_modules"
+    ],
+    "resolver": "jest-pnp-resolver",
+    "testMatch": [
+      "<rootDir>/test/**/*.spec.js"
+    ],
+    "testPathIgnorePatterns": [
+      "<rootDir>/dist",
+      "<rootDir>/es",
+      "<rootDir>/lib",
+      "<rootDir>/node_modules"
+    ],
+    "testURL": "https://localhost"
   }
 }

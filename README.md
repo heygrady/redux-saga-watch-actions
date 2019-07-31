@@ -1,4 +1,5 @@
 # redux-saga-watch-actions
+
 Helper methods for managing sagas that respond to actions. Similar in style to [`redux-actions`](https://github.com/acdlite/redux-actions). An alternate take on [redux-loop](https://github.com/redux-loop/redux-loop).
 
 Whereas `handleActions` maps actions to reducer functions, `watchActions` maps actions to sagas.
@@ -13,7 +14,7 @@ yarn add redux-saga redux-saga-watch-actions
 
 ## Docs
 
-- https://heygrady.github.io/redux-saga-watch-actions/
+- [docs](./docs)
 
 ## Example
 
@@ -26,14 +27,14 @@ import { increment, decrement } from './sagas'
 
 const rootSaga = watchActions({
   [INCREMENT]: increment,
-  [DECREMENT]: decrement
+  [DECREMENT]: decrement,
 })
 export default rootSaga
 ```
 
 ## Comparison to `handleActions`
 
-Below you can see a *reducer* being created with [`handleActions`](https://redux-actions.js.org/docs/api/handleAction.html#handleactions). Reducers and saga do very different things, however, they are similar in that a reducer function expects to be called whenever a specific action is dispatched.
+Below you can see a _reducer_ being created with [`handleActions`](https://redux-actions.js.org/docs/api/handleAction.html#handleactions). Reducers and saga do very different things, however, they are similar in that a reducer function expects to be called whenever a specific action is dispatched.
 
 ```js
 import { handleActions } from 'redux-actions'
@@ -42,7 +43,7 @@ import { increment, decrement } from './reducers'
 
 const reducer = handleActions({
   [INCREMENT]: increment,
-  [DECREMENT]: decrement
+  [DECREMENT]: decrement,
 })
 export default reducer
 ```
@@ -57,23 +58,24 @@ import { call, put } from 'redux-saga/effects'
 import Api from '...'
 
 // worker Saga: will be fired on USER_FETCH_REQUESTED actions
-const fetchUser = function * (action) {
-   try {
-      const user = yield call(Api.fetchUser, action.payload.userId);
-      yield put({type: "USER_FETCH_SUCCEEDED", user: user});
-   } catch (e) {
-      yield put({type: "USER_FETCH_FAILED", message: e.message});
-   }
+const fetchUser = function*(action) {
+  try {
+    const user = yield call(Api.fetchUser, action.payload.userId)
+    yield put({ type: 'USER_FETCH_SUCCEEDED', user: user })
+  } catch (e) {
+    yield put({ type: 'USER_FETCH_FAILED', message: e.message })
+  }
 }
 
 const mySaga = watchActions({
-  ["USER_FETCH_REQUESTED"]: fetchUser
+  ['USER_FETCH_REQUESTED']: fetchUser,
 })
 
 export default mySaga
 ```
 
 ### What does `watchActions` do?
+
 It's a convenience method that removes the boilerplate of having to use [`takeEvery`](https://redux-saga.github.io/redux-saga/docs/api/index.html#takeeverypattern-saga-args) to hook your saga up to actions.
 
 ## Example: without `watchActions`
@@ -90,11 +92,8 @@ import { INCREMENT, DECREMENT } from './constants'
 import { increment, decrement } from './sagas'
 
 // without watch actions
-const rootSaga = function * () {
-  yield all([
-    takeEvery(INCREMENT, increment),
-    takeEvery(DECREMENT, decrement)
-  ])
+const rootSaga = function*() {
+  yield all([takeEvery(INCREMENT, increment), takeEvery(DECREMENT, decrement)])
 }
 
 runSaga(rootSaga)
@@ -116,7 +115,7 @@ import { increment, decrement } from './sagas'
 // with watch actions
 const rootSaga = watchActions({
   [INCREMENT]: increment,
-  [DECREMENT]: decrement
+  [DECREMENT]: decrement,
 })
 
 runSaga(rootSaga)
@@ -139,7 +138,7 @@ import { increment, decrement } from './sagas'
 
 const rootSaga = watchActions({
   [INCREMENT]: increment,
-  [DECREMENT]: decrement
+  [DECREMENT]: decrement,
 })
 export default rootSaga
 ```
@@ -162,4 +161,5 @@ export default mySaga
 ```
 
 ### Middleware
+
 You might want to read about the included [middleware](./docs/middleware/README.md).

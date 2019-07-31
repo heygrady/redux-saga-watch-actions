@@ -11,7 +11,7 @@ describe('Redux Saga Watch Actions', () => {
       const saga = combineSagas()
       const gen = saga()
       const result = gen.next().value
-      expect(result.ALL.length).toBe(0)
+      expect(result.payload).toHaveLength(0)
     })
 
     it('should return a task for each saga', () => {
@@ -21,7 +21,7 @@ describe('Redux Saga Watch Actions', () => {
       const saga = combineSagas(a, b, c)
       const gen = saga()
       const result = gen.next().value
-      expect(result.ALL.length).toBe(3)
+      expect(result.payload).toHaveLength(3)
     })
 
     it('should fork each saga', () => {
@@ -30,8 +30,8 @@ describe('Redux Saga Watch Actions', () => {
       const saga = combineSagas(a, b)
       const gen = saga()
       const result = gen.next().value
-      expect(result.ALL[0].FORK.fn).toBe(a)
-      expect(result.ALL[1].FORK.fn).toBe(b)
+      expect(result.payload[0].payload.fn).toBe(a)
+      expect(result.payload[1].payload.fn).toBe(b)
     })
 
     it('should fork each saga with same args', () => {
@@ -41,8 +41,8 @@ describe('Redux Saga Watch Actions', () => {
       const args = [true, false]
       const gen = saga(...args)
       const result = gen.next().value
-      expect(result.ALL[0].FORK.args).toEqual(args)
-      expect(result.ALL[1].FORK.args).toEqual(args)
+      expect(result.payload[0].payload.args).toEqual(args)
+      expect(result.payload[1].payload.args).toEqual(args)
     })
   })
 })
