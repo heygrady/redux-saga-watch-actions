@@ -33,10 +33,11 @@
     "format": "prettier --write \"{example,src,test}/**/*.{js,jsx,ts,tsx}\" .babelrc.js rollup.config.js .eslintrc.json README.md \"docs/**/*.md\" && yarn lint --fix || true",
     "lint": "eslint src test",
     "dedupe": "npx yarn-deduplicate yarn.lock && yarn install",
-    "prepare": "yarn clean && yarn build",
     "pretest": "yarn lint",
+    "prepare": "yarn clean && yarn build",
     "preversion": "yarn format",
-    "postversion": "git push && git push --tags",
+    "postversion": "npm publish --access public",
+    "postpublish": "git push origin --all && git push origin --tags",
     "test": "jest",
     "coverage": "jest --coverage"
   },
