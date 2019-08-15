@@ -16,10 +16,12 @@
   "repository": "github:/heygrady/redux-saga-watch-actions",
   "bugs": "https://github.com/heygrady/redux-saga-watch-actions/issues",
   "main": "lib/index.js",
+  "types": "index.d.ts",
   "unpkg": "dist/redux-saga-watch-actions.js",
   "module": "es/index.js",
   "files": [
     "dist",
+    "index.d.ts",
     "lib",
     "es",
     "src"
